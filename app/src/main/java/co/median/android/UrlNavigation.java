@@ -249,18 +249,19 @@ public class UrlNavigation {
                 Intent intent = null;
                 // launch browser
                 try {
-                    if (uri.getScheme().equals("intent")) {
+                    if ("intent".equals(uri.getScheme())) {
                         intent = Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME);
-                        mainActivity.startActivity(intent);
-                    } else {
+                    } else if ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) {
                         // forces this URL to be launched in this device's default browser, regardless of the app's deeplink
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
                         if (!TextUtils.isEmpty(getDefaultBrowserPackageName())) {
-                            intent = new Intent(Intent.ACTION_VIEW, uri);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setPackage(getDefaultBrowserPackageName());
-                            mainActivity.startActivity(intent);
                         }
+                    } else {
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
                     }
+                    mainActivity.startActivity(intent);
                 } catch (ActivityNotFoundException ex) {
                     // Try loading fallback url if available
                     if (intent != null) {

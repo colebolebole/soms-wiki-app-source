@@ -80,7 +80,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 34
         applicationId "co.median.android.xapeaz"
-        versionCode 5
+        versionCode 6
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
